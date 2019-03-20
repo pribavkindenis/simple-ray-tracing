@@ -1,0 +1,5 @@
+*.so
+*.o
+.idea/*
+venv/*
+__pycache__/*
