@@ -1,44 +1,47 @@
 import numpy as np
-import copy
 import math
+from typing import Callable
 from ray import Ray
 
 
 class Surface:
-    def reflected_ray(self, ray: Ray) -> Ray:
-        pos_vector = self.intersection_position(ray)
-        dir_vector = self.__reflected_ray_direction(ray)
-        return Ray(ray.n, pos_vector, dir_vector)
 
-    def refracted_ray(self, ray: Ray) -> Ray:
-        pos_vector = self.intersection_position(ray)
-        dir_vector = self.__refracted_ray_direction(ray)
-        return Ray(ray.n, pos_vector, dir_vector)
+    def __init__(self, n1, n2):
+        self.n1 = n1
+        self.n2 = n2
+        self._validate()
 
-    def __reflected_ray_direction(self, ray: Ray):
-        normal_vector = self.get_normal_vector()
-        return ray.dir_vector - 2 * np.dot(ray.dir_vector, normal_vector) * normal_vector
+    def reflected(self, ray: Ray) -> Ray:
+        return self._create_ray(ray, self._reflected_direction)
 
-    def __refracted_ray_direction(self, ray: Ray):
-        normal_vector = copy.deepcopy(self.get_normal_vector())
-        n1 = self.get_first_refractive_index()
-        n2 = self.get_second_refractive_index()
-        scalar_prod = np.dot(ray.dir_vector, normal_vector)
+    def refracted(self, ray: Ray) -> Ray:
+        return self._create_ray(ray, self._refracted_direction)
+
+    def _create_ray(self, ray: Ray, direction: Callable[[Ray], np.ndarray]) -> Ray:
+        position = self._intersection_position(ray)
+        return Ray(ray.n, position, direction(ray))
+
+    def _reflected_direction(self, ray: Ray) -> np.ndarray:
+        normal = self._normal()
+        return ray.direction - 2 * np.dot(ray.direction, normal) * normal
+
+    def _refracted_direction(self, ray: Ray) -> np.ndarray:
+        normal = self._normal()
+        n1 = self.n1
+        n2 = self.n2
+        scalar_prod = np.dot(ray.direction, normal)
         if scalar_prod < 0:
             n1, n2 = n2, n1
-            normal_vector = -normal_vector
-            scalar_prod = np.dot(ray.dir_vector, normal_vector)
-        return n1 * ray.dir_vector - scalar_prod * normal_vector * n1 * \
-               (1 - math.sqrt(((n2 ** 2 - n1 ** 2) / (scalar_prod ** 2 * n1 ** 2)) + 1))
+            normal = -normal
+            scalar_prod = -scalar_prod
+        radicand = ((n2 ** 2 - n1 ** 2) / (scalar_prod ** 2 * n1 ** 2)) + 1
+        return n1 * ray.direction - scalar_prod * normal * n1 * (1 - math.sqrt(radicand))
 
-    def intersection_position(self, ray: Ray):
+    def _intersection_position(self, ray: Ray) -> np.ndarray:
         raise NotImplementedError("Surface can't calculate intersection position")
 
-    def get_normal_vector(self):
+    def _normal(self) -> np.ndarray:
         raise NotImplementedError("Surface doesn't have a normal vector")
 
-    def get_first_refractive_index(self):
-        raise NotImplementedError("Surface doesn't have a first refractive index")
-
-    def get_second_refractive_index(self):
-        raise NotImplementedError("Surface doesn't have a second refractive index")
+    def _validate(self):
+        raise NotImplementedError("Surface doesn't do validation")
