@@ -6,26 +6,29 @@ from surface import Surface
 
 class Plane(Surface):
 
-    def __init__(self, n: int, n1: float, n2: float, position: np.ndarray, normal: np.ndarray):
-        self.n = n
+    def __init__(self,
+                 dim: int,
+                 n1: float,
+                 n2: float,
+                 position: np.ndarray,
+                 n: np.ndarray):
+        self.dim = dim
         self.position = position
-        self.normal = normal / np.linalg.norm(normal)
+        self.n = n / np.linalg.norm(n)
         super().__init__(n1, n2)
 
-    def _normal(self, ray: Ray):
-        return copy.deepcopy(self.normal)
+    def normal(self, position: np.ndarray) -> np.ndarray:
+        return copy.deepcopy(self.n)
 
-    def _intersection_position(self, ray: Ray) -> np.ndarray:
-        t = np.dot(self.normal, self.position - ray.position) / \
-            np.dot(self.normal, ray.direction)
-        if t < 1 ** -30 or isinstance(t, complex):
-            raise ValueError("No intersection")
-        return ray.point(t)
+    def intersection_position(self, ray: Ray) -> np.ndarray or None:
+        t = np.dot(self.n, self.position - ray.position) / \
+            np.dot(self.n, ray.direction)
+        return ray.point(t) if super().valid_t(t) else None
 
     def _validate(self):
-        if self.n < 2:
+        if self.dim < 2:
             raise ValueError("Dimension must be at least 2")
-        if len(self.position.shape) != 1 or len(self.position) != self.n:
+        if len(self.position.shape) != 1 or len(self.position) != self.dim:
             raise ValueError("Position vector must have shape (1, n)")
-        if len(self.normal.shape) != 1 or len(self.normal) != self.n:
+        if len(self.n.shape) != 1 or len(self.n) != self.dim:
             raise ValueError("Normal vector must have shape (1, n)")
