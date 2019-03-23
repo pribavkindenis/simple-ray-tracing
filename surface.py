@@ -22,11 +22,11 @@ class Surface:
         return Ray(ray.n, position, direction(ray))
 
     def _reflected_direction(self, ray: Ray) -> np.ndarray:
-        normal = self._normal()
+        normal = self._normal(ray)
         return ray.direction - 2 * np.dot(ray.direction, normal) * normal
 
     def _refracted_direction(self, ray: Ray) -> np.ndarray:
-        normal = self._normal()
+        normal = self._normal(ray)
         n1 = self.n1
         n2 = self.n2
         scalar_prod = np.dot(ray.direction, normal)
@@ -40,7 +40,7 @@ class Surface:
     def _intersection_position(self, ray: Ray) -> np.ndarray:
         raise NotImplementedError("Surface can't calculate intersection position")
 
-    def _normal(self) -> np.ndarray:
+    def _normal(self, ray: Ray) -> np.ndarray:
         raise NotImplementedError("Surface doesn't have a normal vector")
 
     def _validate(self):
