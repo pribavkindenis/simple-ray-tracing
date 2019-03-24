@@ -22,7 +22,7 @@ class Sphere(Surface):
         c = np.dot(pc, pc) - self.radius**2
         t1, t2 = np.roots([a, b, c])
         min_t = min(t1, t2)
-        t = min_t if min_t >= 0 else max(t1, t2)
+        t = min_t if min_t >= 10**-10 else max(t1, t2)
         return ray.point(t) if super().valid_t(t) else None
 
     def normal(self, position: np.ndarray) -> np.ndarray:

@@ -33,11 +33,11 @@ class Ellipse(Surface):
         c = mpc.dot(mpc) - self.semi_axes.prod()**2
         t1, t2 = np.roots([a, b, c])
         min_t = min(t1, t2)
-        t = min_t if min_t >= 0 else max(t1, t2)
+        t = min_t if min_t >= 10**-10 else max(t1, t2)
         return ray.point(t) if super().valid_t(t) else None
 
     def normal(self, position: np.ndarray) -> np.ndarray:
-        normal = position - self.center
+        normal = 2 * (position - self.center) / np.power(self.semi_axes, 2)
         return normal / np.linalg.norm(normal)
 
     def _validate(self):
