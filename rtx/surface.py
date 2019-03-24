@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from typing import Optional
-from ray import Ray
+from rtx.ray import Ray
 
 
 class Surface:
@@ -42,8 +42,6 @@ class Surface:
         scalar_prod = np.dot(ray.direction, normal)
         if scalar_prod < 0:
             n1, n2 = n2, n1
-            normal = -normal
-            scalar_prod = np.dot(ray.direction, normal)
         radicand = 1 - (n1 / n2) ** 2 * (1 - scalar_prod ** 2)
         if radicand <= 0:
             return None

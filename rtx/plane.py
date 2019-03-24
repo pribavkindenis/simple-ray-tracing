@@ -1,7 +1,8 @@
 import numpy as np
 import copy
-from ray import Ray
-from surface import Surface
+from rtx.ray import Ray
+from rtx.surface import Surface
+from typing import Optional
 
 
 class Plane(Surface):
@@ -20,7 +21,7 @@ class Plane(Surface):
     def normal(self, position: np.ndarray) -> np.ndarray:
         return copy.deepcopy(self.n)
 
-    def intersection_position(self, ray: Ray) -> np.ndarray or None:
+    def intersection_position(self, ray: Ray) -> Optional[np.ndarray]:
         t = np.dot(self.n, self.position - ray.position) / \
             np.dot(self.n, ray.direction)
         return ray.point(t) if super().valid_t(t) else None

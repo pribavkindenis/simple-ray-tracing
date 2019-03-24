@@ -1,6 +1,7 @@
 import numpy as np
-from ray import Ray
-from surface import Surface
+from rtx.ray import Ray
+from rtx.surface import Surface
+from typing import Optional
 
 
 class Ellipse(Surface):
@@ -25,7 +26,7 @@ class Ellipse(Surface):
                     m[i, j] = self.semi_axes.prod() / self.semi_axes[i]
         return m
 
-    def intersection_position(self, ray: Ray) -> np.ndarray or None:
+    def intersection_position(self, ray: Ray) -> Optional[np.ndarray]:
         md = self.m.dot(ray.direction)
         mpc = self.m.dot(ray.position - self.center)
         a = md.dot(md)

@@ -1,6 +1,7 @@
 import numpy as np
-from ray import Ray
-from surface import Surface
+from rtx.ray import Ray
+from rtx.surface import Surface
+from typing import Optional
 
 
 class Sphere(Surface):
@@ -15,7 +16,7 @@ class Sphere(Surface):
         self.radius = radius
         super().__init__(n1, n2)
 
-    def intersection_position(self, ray: Ray) -> np.ndarray or None:
+    def intersection_position(self, ray: Ray) -> Optional[np.ndarray]:
         pc = ray.position - self.center
         a = 1
         b = 2*np.dot(pc, ray.direction)

@@ -1,10 +1,10 @@
 import numpy as np
-from plane import Plane
-from ray import Ray
+from rtx.plane import Plane
+from rtx.ray import Ray
 from typing import Tuple
-from sphere import Sphere
-from ellipse import Ellipse
-from surface import Surface
+from rtx.sphere import Sphere
+from rtx.ellipse import Ellipse
+from rtx.surface import Surface
 from matplotlib import pyplot as plt
 from matplotlib import patches
 
@@ -19,7 +19,7 @@ def plane_render(ray: Ray, plane: Plane):
     fig, ax = plt.subplots()
     reflected = plane.reflected(ray)
     refracted = plane.refracted(ray)
-    distance = 10
+    distance = 5
     plane_position = plane.position
 
     if reflected is not None:
@@ -41,7 +41,7 @@ def plane_render(ray: Ray, plane: Plane):
 def sphere_render(ray: Ray, sphere: Sphere, max_level: int = 10):
     fig, ax = plt.subplots()
     ax.add_patch(plt.Circle(sphere.center, sphere.radius, fill=False, color="black"))
-    _recursive_sphere_render(ax, ray, sphere, "blue", 0, max_level)
+    _recursive_render(ax, ray, sphere, "blue", 0, max_level)
     ax.autoscale()
     plt.axis('equal')
     plt.grid()
@@ -53,25 +53,25 @@ def ellipse_render(ray: Ray, ellipse: Ellipse, max_level: int = 10):
     width = ellipse.semi_axes[0] * 2
     height = ellipse.semi_axes[1] * 2
     ax.add_patch(patches.Ellipse(ellipse.center, width, height, fill=False, color="black"))
-    _recursive_sphere_render(ax, ray, ellipse, "blue", 0, max_level)
+    _recursive_render(ax, ray, ellipse, "blue", 0, max_level)
     ax.autoscale()
     plt.axis('equal')
     plt.grid()
     fig.show()
 
 
-def _recursive_sphere_render(ax: plt.Axes, ray: Ray, surface: Surface, color: str, level: int, max_level: int):
+def _recursive_render(ax: plt.Axes, ray: Ray, surface: Surface, color: str, level: int, max_level: int):
     reflected = surface.reflected(ray)
     refracted = surface.refracted(ray)
-    distance = 10
+    distance = 5
 
     if reflected is not None:
         distance: int = np.linalg.norm(ray.position - reflected.position)
         if level < max_level:
-            _recursive_sphere_render(ax, reflected, surface, reflected_color, level + 1, max_level)
+            _recursive_render(ax, reflected, surface, reflected_color, level + 1, max_level)
 
     if refracted is not None and level < max_level:
-        _recursive_sphere_render(ax, refracted, surface, refracted_color, level + 1, max_level)
+        _recursive_render(ax, refracted, surface, refracted_color, level + 1, max_level)
 
     ax.plot(*_ray_coords(ray, distance), color)
 
