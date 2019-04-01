@@ -5,6 +5,8 @@ A Python application that performs simple ray tracing.
 
 ![OOPS](./screenshots/ellipse.png)
 
+![OOPS](./screenshots/lines.png)
+
 # Requirements
 * python3
 * virtualenv
