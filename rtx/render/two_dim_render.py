@@ -23,7 +23,7 @@ def plane_render(ray: Ray, plane: Plane):
     plane_position = plane.position
 
     if reflected is not None:
-        distance: int = np.linalg.norm(ray.position - reflected.position)
+        distance: float = np.linalg.norm(ray.position - reflected.position)
         plane_position = reflected.position
         ax.plot(*_ray_coords(reflected), reflected_color)
 
@@ -66,7 +66,7 @@ def _recursive_render(ax: plt.Axes, ray: Ray, surface: Surface, color: str, leve
     distance = 5
 
     if reflected is not None:
-        distance: int = np.linalg.norm(ray.position - reflected.position)
+        distance: float = np.linalg.norm(ray.position - reflected.position)
         if level < max_level:
             _recursive_render(ax, reflected, surface, reflected_color, level + 1, max_level)
 
@@ -95,6 +95,6 @@ def _rotate(v: np.array) -> np.ndarray:
     return np.array(temp)
 
 
-def _ray_coords(ray: Ray, length: int = 5) -> Tuple[list, list]:
+def _ray_coords(ray: Ray, length: float = 5) -> Tuple[list, list]:
     end_point = ray.point(length)
     return [ray.position[0], end_point[0]], [ray.position[1], end_point[1]]
