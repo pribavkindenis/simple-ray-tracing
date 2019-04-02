@@ -7,6 +7,7 @@ from rtx.ellipse import Ellipse
 from rtx.surface import Surface
 from matplotlib import pyplot as plt
 from matplotlib import patches
+from matplotlib.lines import Line2D
 
 
 surface_color = "black"
@@ -35,6 +36,11 @@ def plane_render(ray: Ray, plane: Plane):
     ax.plot(*_normal_coords(plane, plane_position), surface_color, linestyle="--")
     ax.axis('equal')
     ax.grid()
+    legend_lines = [
+        Line2D([0], [0], color=ray_color),
+        Line2D([0], [0], color=reflected_color),
+        Line2D([0], [0], color=refracted_color)]
+    fig.legend(legend_lines, ['Ray', 'Reflected', 'Refracted'])
     fig.show()
 
 
@@ -45,6 +51,11 @@ def sphere_render(ray: Ray, sphere: Sphere, max_level: int = 10):
     ax.autoscale()
     plt.axis('equal')
     plt.grid()
+    legend_lines = [
+        Line2D([0], [0], color=ray_color),
+        Line2D([0], [0], color=reflected_color),
+        Line2D([0], [0], color=refracted_color)]
+    fig.legend(legend_lines, ['Ray', 'Reflected', 'Refracted'])
     fig.show()
 
 
@@ -57,6 +68,11 @@ def ellipse_render(ray: Ray, ellipse: Ellipse, max_level: int = 10):
     ax.autoscale()
     plt.axis('equal')
     plt.grid()
+    legend_lines = [
+        Line2D([0], [0], color=ray_color),
+        Line2D([0], [0], color=reflected_color),
+        Line2D([0], [0], color=refracted_color)]
+    fig.legend(legend_lines, ['Ray', 'Reflected', 'Refracted'])
     fig.show()
 
 
