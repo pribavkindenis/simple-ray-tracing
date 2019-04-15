@@ -12,16 +12,20 @@ def show_two_dim_render_demo():
     ray = Ray(2, np.array([3, 6]), np.array([-1, -7]))
     plane = Plane(2, 1.4, 1, np.array([-6, -1]), np.array([-2, -2]))
     two_dim_render.plane_render(ray, plane)
+
     r1 = Ray(2, np.array([-2, 2]), np.array([1, 1]))
     r2 = Ray(2, np.array([7, 5]), np.array([1, 2]))
+    sphere1 = Sphere(2, 1, 1.8, np.array([5, 6]), 4.3)
+    two_dim_render.sphere_render(r1, sphere1, 100)
 
-    sphere = Sphere(2, 1, 1.8, np.array([5, 6]), 4)
-    two_dim_render.sphere_render(r1, sphere, 100)
-    two_dim_render.sphere_render(r2, sphere, 100)
+    sphere2 = Sphere(2, 1, 1.8, np.array([5, 6]), 4)
+    two_dim_render.sphere_render(r2, sphere2, 100)
 
-    ellipse = Ellipse(2, 1.2, 1, np.array([5, 6]), np.array([60, 30]))
-    two_dim_render.ellipse_render(r1, ellipse, 300)
-    two_dim_render.ellipse_render(r2, ellipse, 300)
+    ellipse1 = Ellipse(2, 1.2, 1, np.array([5, 6]), np.array([60, 30]))
+    two_dim_render.ellipse_render(r1, ellipse1, 300)
+
+    ellipse2 = Ellipse(2, 1.2, 1, np.array([15, 25]), np.array([6, 10]))
+    two_dim_render.ellipse_render(r2, ellipse2, 200)
 
 
 def three_d_plane():
@@ -55,7 +59,7 @@ def three_d_multiple_plane():
 
 def three_d_sphere():
     ray = Ray(3, np.array([0, 5, 0]), np.array([-1.3, 1, 0.5]))
-    sphere = Sphere(3, 1, 1, np.array([0, 0, 0]), 20)
+    sphere = Sphere(3, 1.23, 1, np.array([0, 0, 0]), 20)
     three_dim_render.sphere_render(ray,
                                    sphere,
                                    100,
@@ -72,7 +76,7 @@ def three_d_sphere():
 
 def three_d_ellipse():
     ray = Ray(3, np.array([0, 5, 0]), np.array([-1.3, 1, 0.5]))
-    ellipse = Ellipse(3, 1, 1, np.array([0, 0, 0]), np.array([12, 30, 12]))
+    ellipse = Ellipse(3, 1.23, 1, np.array([0, 0, 0]), np.array([12, 30, 12]))
     three_dim_render.ellipse_render(ray,
                                     ellipse,
                                     100,

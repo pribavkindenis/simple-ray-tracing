@@ -8,7 +8,7 @@ class Surface:
 
     @staticmethod
     def valid_t(t):
-        return t > 1 ** -40 and not isinstance(t, complex)
+        return t > 1e-5 and not isinstance(t, complex)
 
     def __init__(self, n1, n2):
         self.n1 = n1
